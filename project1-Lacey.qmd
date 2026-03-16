@@ -1,0 +1,159 @@
+---
+title: "Project 1"
+format: docx
+editor: visual
+---
+
+# Exploratory Data Story with Gapminder: Saudi Arabia
+
+## Kimaya Lacey
+
+## Installing packages
+
+```{r}
+#install.packages("tidyverse")
+#install.packages("gapminder")
+```
+
+## Loading packages
+
+```{r}
+library(tidyverse)
+library(gapminder)
+```
+
+## Load the gapminder dataset
+
+```{r}
+data("gapminder")
+gapminder
+```
+
+## Filtering the gapminder dataset for country of interest
+
+```{r}
+country_sa <- gapminder %>% 
+  filter(country == "Saudi Arabia")
+
+country_sa
+```
+
+## Introduction
+
+The Gapminder dataset contains 142 countries across five continents. The country of interest for this project is Saudi Arabia, on the continent of Asia. Saudi Arabia is a kingdom in the Middle East and is known for being one of the world's largest oil-producing countries (Teitelbaum, J, 2026). The government system is a monarchy, and they are currently ruled by Salman bin Abdulaziz Al Saud since 2015. The Middle Eastern countries typically have strict government rules aligned with their religious and cultural beliefs. Women from Saudi Arabia have strict governance compared to the male population. According to the Yale Review of International Studies, "The guardianship law in Saudi Arabia was a function of culture, not religion. Saudi Arabian culture is patriarchal and, in some cases, does oppress women. However, the Islamic faith does not oppress women; in fact, the thrust of the religion is the equality of all before God" (Bandar, 2024). Additionally, Saudi Arabia has a growing population faces challenges with their high unemployment rates and water scarcity. The Environmental Science and Pollution Research article states, "Saudi has an annual water supply of roughly 89.5 m3 per person as consumption is rising in parallel with the country’s rapid population growth and development...Apart from agricultural use, the food industry utilizes up to 80% of freshwater supplies, with only around 20% of rain recharging the aquifer, meaning that the region will still be water-stressed by 2025" (Abdella et. al, 2024). Saudi Arabia is undergoing an epidemiological transition, facing high rates of noncommunicable diseases (e.g., diabetes and cardiovascular disease) while also managing infectious disease risks, road traffic injuries, and health challenges related to urbanization. The Saudi Arabian government has implemented a wide range of policy measures in compliance with WHO objectives to strengthen the healthcare system, promote population health, and improve the management of NCDs (Hazazi, 2022). The outcomes to be explored in Saudi Arabia are the prevalence of noncommunicable diseases, maternal and child health, and access to healthcare services.
+
+## Descriptive Exploration
+
+```{r}
+mean_lifeExp <- mean(country_sa$lifeExp)
+sd_lifeExp <- sd(country_sa$lifeExp)
+n_years <- length(unique(country_sa$year))
+
+lifeexp_sa <- c(mean_lifeExp, sd_lifeExp, n_years)
+lifeexp_sa
+```
+
+Across 12 years of data from gapminder, the mean life expecatancy was 58.7 years (SD = 11.9).
+
+## Descriptive Exploration 2
+
+```{r}
+head(country_sa)
+tail(country_sa)
+summary(country_sa)
+
+mean_gdp <- mean(country_sa$gdpPercap)
+sd_gdp <- sd(country_sa$gdpPercap)
+
+gpdpc_sa <- c(mean_gdp,sd_gdp)
+gpdpc_sa
+```
+
+Across 12 years of data, the mean gdp is 20261.7 (SD = 8754.4).
+
+## Filtering the USA and Saudi Arabia data from gapminder
+
+```{r}
+library(dplyr)
+
+country_usa <- gapminder %>% 
+  filter (country == "United States")
+
+country_usa
+```
+
+## Visualizations
+
+### Life Expectancy Over Time Graph
+
+```{r}
+country_usa3 <- gapminder %>%
+              filter(country %in% c("Saudi Arabia", "United States"))
+
+ggplot(country_usa3,
+         aes(
+         x = year, 
+         y = lifeExp, color = country)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Life Expectancy Over Time",
+    x = "Year",
+    y = "Life Expectancy (years)"
+  )
+country_usa3
+```
+
+Life expectancy increased exponentially in both Saudi Arabia and the United States over the 1950s to the mid 2000s. The United States begins with a much higher life expectancy and shows gradual, steady improvement, while Saudi Arabia starts much lower and shows rapid gains over several decades.The most notable change occurs for Saudi Arabia between the 1960s and 1980s, when life expectancy rises sharply. This period reflects the fastest growth compared to earlier and later years. In contrast, the United States shows slower, incremental increases throughout the entire time span, with no dramatic jumps, suggesting more stable long-term improvements. These trends highlight how public health investments—such as improved access to healthcare, sanitation, vaccination programs, nutrition, and economic development—can dramatically increase life expectancy, especially in countries starting from lower baselines. Saudi Arabia’s rapid rise suggests major improvements in living conditions and healthcare infrastructure, while the U.S. trend reflects the challenge of making large gains once life expectancy is already relatively high. The plot only shows two countries and life expectancy averages, which mask disparities within populations and do not explain specific causes of change such as disease patterns or healthcare policy differences.
+
+### GDP per capita vs life expectancy Graph
+
+```{r}
+country_usa3 <- gapminder %>%
+              filter(country %in% c("Saudi Arabia", "United States"))
+
+ggplot(country_usa3,
+         aes(
+         x = gdpPercap, 
+         y = lifeExp, color = country)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "gdpPercap vs. Life Expectancy",
+    x = "gdpPercap",
+    y = "Life Expectancy (years)"
+  )
+country_usa3
+```
+
+The plot shows the relationship between GDP per capita and life expectancy for Saudi Arabia and the United States, illustrating how economic growth is associated with changes in population health. In the United States, life expectancy increases steadily as GDP per capita rises, suggesting a consistent and stable relationship between national income and health outcomes. In Saudi Arabia, life expectancy improves rapidly at lower GDP levels, but the trend appears more variable at higher income levels, indicating that gains in wealth do not always translate proportionally into health improvements. From a public health perspective, this suggests that while economic development can support better healthcare access, infrastructure, and living conditions, other factors such as healthcare quality, lifestyle behaviors, and chronic disease burden also play critical roles. A limitation of this plot is that it shows only two countries and does not account for other determinants of health, for example, education, policy changes, or inequality, so we cannot assume GDP alone causes improvements in life expectancy.
+
+## Reflection
+
+Exploring the Gapminder dataset provided valuable insight into how population health indicators, particularly life expectancy, change over time in relation to economic development and broader social conditions. Through this project, I learned how dramatically life expectancy in Saudi Arabia has improved over the latter half of the 20th century and how these gains contrast with the more gradual, steady improvements seen in the United States. Working with the data reinforced the importance of visualizing trends across time rather than relying solely on summary statistics, as the plots revealed patterns and transitions that would not be as clear from averages alone.
+
+One aspect that surprised me was the rapid increase in life expectancy in Saudi Arabia between the 1960s and 1980s. Research findings determined, "Saudi Arabia life expectancy for 2025 wa 75.97%, a 0.19% increase from 2024" (Macrotrends, 2026). The magnitude and speed of improvement suggest that large-scale public health interventions and infrastructure development can have a profound impact on population health within a relatively short period of time. According to the NIH,"Although in Saudi Arabia, significant progress has been made in reducing U5MR over the past few decades, the differences between genders were not explored. Some studies indicate that females face a higher risk of childhood mortality than males, particularly in nations where gender bias in healthcare services is documented" (Al-Nafeesah, 2025). Additionally, while GDP per capita increased substantially, the GDP versus life expectancy plot showed that economic growth alone does not guarantee proportional health gains, particularly at higher income levels. This challenged the assumption that wealth automatically translates into better health outcomes and highlighted the role of non-economic factors such as chronic disease burden, lifestyle behaviors, and health system effectiveness.
+
+If I were to explore this data set further, I would be interested in examining additional health indicators to better understand what drives these trends. Specifically, I would want to investigate maternal and child mortality, prevalence of noncommunicable diseases, and healthcare access measures over time in Saudi Arabia. The Annals of Saudi Medicine came to a conclusion, "Saudi Arabia life expectancy for 2025 was 75.97, a 0.19% increase from 2024" (Al-Meshari, 1995). Particularly execute a study on risk factors for female birth mortality rates. I would also be curious to compare Saudi Arabia with other Middle Eastern countries to determine whether similar life expectancy patterns exist across the region or if Saudi Arabia’s trajectory is unique. Before the creation of Vision 2030, the healthcare system had limited services and their preventative care services are underdeveloped (AlabdulKader, 2025). Finally, exploring within-country disparities—such as differences by gender or socioeconomic status—would provide a more nuanced understanding of population health beyond national averages.
+
+Overall, this project emphasized that population health is shaped by a complex interaction of economic, social, and policy factors. The data not only tell a story of progress, but also raise important questions about equity, sustainability, and the next phase of health improvement as countries undergo epidemiological transitions.
+
+## References
+
+Abdella, F. I. A., El-Sofany, W. I., & Mansour, D. (2024). Water scarcity in the Kingdom of Saudi Arabia. Environmental Science and Pollution Research International, 31(19), 27554–27565. https://doi.org/10.1007/s11356-024-33024-3
+
+Al-Meshari, A., Chattopadhyay, S. K., Younes, B., & Anokute, C. (1995). Epidemiology of maternal mortality in Saudi Arabia. Annals of Saudi Medicine, 15(4), 317–322. https://doi.org/10.5144/0256-4947.1995.317
+
+Al-Nafeesah, A. (2025). Analysis of under-five mortality rate in Saudi Arabia: 1973 to 2022. Cureus, 17(1), e78048. https://doi.org/10.7759/cureus.78048
+
+AlAbdulKader, A. M., & Jabr, M. (2025). Transforming population health in Saudi Arabia: Aligning strategies with Vision 2030 for a healthier future. Population Health Management, 28(4), 224–227. https://doi.org/10.1089/pop.2025.0047
+
+Bandar, F. (2024). Religion, culture, and legal reform in Saudi Arabia. Retrieved February 10.
+
+Hazazi, A., & Wilson, A. (2022). Noncommunicable diseases and health system responses in Saudi Arabia: Focus on policies and strategies. A qualitative study. Health Research Policy and Systems, 20(1), 63. https://doi.org/10.1186/s12961-022-00872-9
+
+Life expectancy in Saudi Arabia. (n.d.). Macrotrends. https://www.macrotrends.net/global-metrics/countries/sau/saudi-arabia/life-expectancy
+
+OpenAI. (2026). ChatGPT (GPT-5.2) \[Large language model\]. https://chat.openai.com/
+
+Teitelbaum, J. (2026). Saudi Arabia. Encyclopaedia Britannica. Retrieved February 10, 2026.
